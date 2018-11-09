@@ -1,21 +1,23 @@
 const sendgrid = require('@sendgrid/mail')
 
-const sendEmail = async (emailClient) => {
+const sendRegistrationConfirmation = async (user) => {
   try {
-    // sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+    sendgrid.setApiKey(process.env.SENDGRID_API_KEY2);
     const msg = {
       to: 'shawnamatt@gmail.com',
-      from: 'sender@example.org',
-      subject: 'Hello world',
-      text: 'Hello plain world!',
-      html: '<p>Hello HTML world!</p>',
-    };
-    const result = await emailClient.send(msg);
-    return result
+      from: 'info@example.com',
+      subject: 'Welcome to the Bash',
+      templateId: 'd-4c1e553122fc457d86cd008958be4ec4',
+      dynamic_template_data: {
+        username: user.name,
+      }
+    }
+    let result = await sendgrid.send(msg)
+    return result[0];
   } catch(e) {
-    console.log(e)
+    // console.log(e)
     throw e;
   }
 }
 
-module.exports = sendEmail
+module.exports = sendRegistrationConfirmation
